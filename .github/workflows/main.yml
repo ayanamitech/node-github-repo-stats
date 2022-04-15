@@ -1,0 +1,54 @@
+name: GitHub Clone Count for 14 days at every 8 hours
+
+# Controls when the action will run.
+on:
+  schedule:
+    - cron: "0 */8 * * *"
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "main"
+  main:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch latest stats
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_USER: "ayanamitech"
+        run: npm start
+
+      - name: (Optional) Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: (Changeme) Add to git repo
+        run: |
+          git add .
+          git config --global user.name "Ayanami Tech"
+          git config --global user.email "ayanamitech@protonmail.com"
+          git commit --allow-empty -m "Automated stats update"
+
+      - name: Push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
