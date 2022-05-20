@@ -27,11 +27,12 @@ const GithubStats = async (config) => {
           };
         });
         public_repo_list = public_repo_list.concat(result);
+        break;
       } catch (e) {
         console.error(e);
+        await setDelay(60);
         retry++;
       }
-      await setDelay(60);
     }
   }).map(f => () => f);
   // Prevent rate limit
