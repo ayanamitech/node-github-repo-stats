@@ -1,11 +1,14 @@
-const axios = require('axios');
 const fs = require('fs');
-const { sliceToChunks, setDelay, checkDirectory } = require('./libs');
+const axios = require('axios');
+const {default: PQueue} = require('p-queue-cjs');
+const {setDelay, checkDirectory} = require('./libs');
 
 // Get latest stats from Github that requires Github Token Auth, and then write the results to disk
 const GithubStats = async (config) => {
   let public_repo_list = [];
   let public_repo_stats = [];
+  const queue = new PQueue({ concurrency: 5, intervalCap: 20, interval: 60 * 1000 });
+  const maxRetry = 10;
 
   const axios_header = {
     headers: {
@@ -13,21 +16,26 @@ const GithubStats = async (config) => {
     }
   };
   let fetchRepoList = config.repo_org.map(async (e) => {
-    const rawData = await axios.get('https://api.github.com/users/' + e + '/repos', axios_header);
-    const result = rawData.data.map((e) => {
-      return {
-        repo: e.name,
-        repo_name: e.full_name
-      };
-    });
-    public_repo_list = public_repo_list.concat(result);
+    let retry = 0;
+    while (retry < maxRetry) {
+      try {
+        const rawData = await axios.get('https://api.github.com/users/' + e + '/repos', axios_header);
+        const result = rawData.data.map((e) => {
+          return {
+            repo: e.name,
+            repo_name: e.full_name
+          };
+        });
+        public_repo_list = public_repo_list.concat(result);
+      } catch (e) {
+        console.error(e);
+        retry++;
+      }
+      await setDelay(60);
+    }
   });
   // Prevent rate limit
-  fetchRepoList = sliceToChunks(fetchRepoList);
-  for await (const chunk of fetchRepoList) {
-    await Promise.all(chunk);
-    await setDelay();
-  }
+  await queue.addAll(fetchRepoList);
   let fetchRepoStats = public_repo_list.map(async (r) => {
     try {
       const [ rawList, rawViews ] = await Promise.all([
@@ -35,17 +43,13 @@ const GithubStats = async (config) => {
         axios.get('https://api.github.com/repos/' + r.repo_name + '/traffic/views', axios_header)
       ]);
       public_repo_stats = public_repo_stats.concat({ ...r, repo_views: rawViews.data, repo_clone: rawList.data });
-    } catch (error) {
+    } catch (e) {
       // Handle error for repositories without write access
       public_repo_stats = public_repo_stats.concat({ ...r, repo_views: {}, repo_clone: {} });
     }
   });
   // Prevent rate limit
-  fetchRepoStats = sliceToChunks(fetchRepoStats, 5);
-  for await (const chunk of fetchRepoStats) {
-    await Promise.all(chunk);
-    await setDelay();
-  }
+  await queue.addAll(fetchRepoStats);
   // Write to disk
   for (const chunk of public_repo_stats) {
     checkDirectory('data/' + chunk.repo_name);

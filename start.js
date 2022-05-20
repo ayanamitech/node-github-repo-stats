@@ -1,5 +1,5 @@
 const process = require('process');
-const GithubStats = require('./index');
+const GithubStats = require('./src');
 
 // load config from .env
 require('dotenv').config();

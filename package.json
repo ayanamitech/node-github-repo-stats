@@ -1,8 +1,8 @@
 {
   "name": "node-github-repo-stats",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Fetch Github Repo Stats with Node.js",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "preinstall": "rmdir-cli data",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,6 +17,9 @@
     "badge",
     "readme"
   ],
+  "files": [
+    "src"
+  ],
   "author": "AyanamiTech <ayanami0330@protonmail.com>",
   "license": "MIT",
   "bugs": {
@@ -24,11 +27,12 @@
   },
   "homepage": "https://github.com/ayanamitech/node-github-repo-stats#readme",
   "dependencies": {
-    "axios": "^0.26.1"
+    "axios": "^0.27.2",
+    "p-queue-cjs": "7.2.0"
   },
   "devDependencies": {
-    "dotenv": "^16.0.0",
-    "eslint": "^8.12.0",
+    "dotenv": "^16.0.1",
+    "eslint": "8.15",
     "rmdir-cli": "^2.0.6"
   }
 }
