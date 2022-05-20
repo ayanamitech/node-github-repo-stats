@@ -33,7 +33,7 @@ const GithubStats = async (config) => {
       }
       await setDelay(60);
     }
-  });
+  }).map(f => () => f);
   // Prevent rate limit
   await queue.addAll(fetchRepoList);
   let fetchRepoStats = public_repo_list.map(async (r) => {
@@ -47,7 +47,7 @@ const GithubStats = async (config) => {
       // Handle error for repositories without write access
       public_repo_stats = public_repo_stats.concat({ ...r, repo_views: {}, repo_clone: {} });
     }
-  });
+  }).map(f => () => f);
   // Prevent rate limit
   await queue.addAll(fetchRepoStats);
   // Write to disk
