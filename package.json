@@ -18,7 +18,8 @@
     "readme"
   ],
   "files": [
-    "src"
+    "src",
+    "start.js"
   ],
   "author": "AyanamiTech <ayanami0330@protonmail.com>",
   "license": "MIT",
