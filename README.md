@@ -1,6 +1,6 @@
 # node-github-repo-stats
 
-[![Build Status](https://github.com/ayanamitech/node-github-repo-stats/workflows/GitHub%20Clone%20Count%20for%2014%20days%20at%20every%208%20hours/badge.svg)](https://github.com/ayanamitech/node-github-repo-stats/actions)
+[![Build Status](https://github.com/ayanamitech/node-github-repo-stats/workflows/Github%20CI%20Cron%20Job/badge.svg)](https://github.com/ayanamitech/node-github-repo-stats/actions)
 [![NPM Package Version](https://img.shields.io/npm/v/node-github-repo-stats.svg)](https://npmjs.org/package/node-github-repo-stats)
 [![NPM Package Downloads](https://img.shields.io/npm/dm/node-github-repo-stats.svg)](https://npmjs.org/package/node-github-repo-stats)
 [![Known Vulnerabilities](https://snyk.io/test/github/ayanamitech/node-github-repo-stats/badge.svg?style=flat-square)](https://snyk.io/test/github/ayanamitech/node-github-repo-stats)
