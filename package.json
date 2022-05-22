@@ -1,6 +1,6 @@
 {
   "name": "node-github-repo-stats",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Fetch Github Repo Stats with Node.js",
   "main": "src/index.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/ayanamitech/node-github-repo-stats#readme",
   "dependencies": {
     "axios": "^0.27.2",
-    "p-queue-cjs": "7.2.0"
+    "p-queue-cjs": "7.2.1"
   },
   "devDependencies": {
     "dotenv": "^16.0.1",

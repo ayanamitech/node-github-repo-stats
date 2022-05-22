@@ -1,6 +1,6 @@
 const fs = require('fs');
 const axios = require('axios');
-const {default: PQueue} = require('p-queue-cjs');
+const {PQueue} = require('p-queue-cjs');
 const {setDelay, checkDirectory} = require('./libs');
 
 // Get latest stats from Github that requires Github Token Auth, and then write the results to disk
