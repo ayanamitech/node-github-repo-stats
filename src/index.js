@@ -19,7 +19,7 @@ const GithubStats = async (config) => {
     let retry = 0;
     while (retry < maxRetry) {
       try {
-        const rawData = await axios.get('https://api.github.com/users/' + e + '/repos', axios_header);
+        const rawData = await axios.get('https://api.github.com/users/' + e + '/repos?per_page=100', axios_header);
         const result = rawData.data.map((e) => {
           return {
             repo: e.name,
