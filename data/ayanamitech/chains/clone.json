@@ -1,0 +1,11 @@
+{
+  "count": 3,
+  "uniques": 3,
+  "clones": [
+    {
+      "timestamp": "2022-06-22T00:00:00Z",
+      "count": 3,
+      "uniques": 3
+    }
+  ]
+}
